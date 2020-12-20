@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"../controllers"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
@@ -11,13 +12,17 @@ import (
 
 type Post struct {
 	ID string `json:"id"`
-	Title string `json:"title"`
-	Body string `json:"body"`
+	Name string `json:"name"`
+	Description string `json:"description"`
+	Level string `json:"level"`
+	Location string `json:"location"`
+	Picture string `json:"picture"`
 }
 
 var posts []Post
 
 func GetPosts(w http.ResponseWriter, r *http.Request) {
+	log.Print(r)
 	w.Header().Set("Content-Type", "application/json")
 	err := json.NewEncoder(w).Encode(posts)
 	if err != nil {
@@ -35,6 +40,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	controllers.UploadFile(r)
 }
 
 func GetPost(w http.ResponseWriter, r *http.Request) {
